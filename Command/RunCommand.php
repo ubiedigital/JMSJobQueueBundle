@@ -447,7 +447,12 @@ class RunCommand extends \Symfony\Bundle\FrameworkBundle\Command\ContainerAwareC
 
     private function findConsoleFile()
     {
-        $kernelDir = $this->getContainer()->getParameter('kernel.root_dir');
+        $container = $this->getContainer();
+        if ($container->hasParameter('kernel.console_path')) {
+            return $container->getParameter('kernel.console_path');
+        }
+
+        $kernelDir = $container->getParameter('kernel.root_dir');
 
         if (file_exists($kernelDir.'/console')) {
             return $kernelDir.'/console';
